@@ -1,12 +1,16 @@
 package de.maxhenkel.shulkerbox.menu;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class AdvancedShulkerboxMenu extends ShulkerBoxMenu {
 
@@ -34,6 +38,11 @@ public class AdvancedShulkerboxMenu extends ShulkerBoxMenu {
     }
 
     public static void open(ServerPlayer player, ItemStack shulkerBox) {
+        if (shulkerBox.has(DataComponents.LOCK))
+        {
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SHULKER_BOX_CLOSE, SoundSource.BLOCKS, 0.5F, getVariatedPitch(player.level()));
+            return;
+        }
         player.openMenu(new MenuProvider() {
             @Override
             public Component getDisplayName() {
@@ -48,6 +57,10 @@ public class AdvancedShulkerboxMenu extends ShulkerBoxMenu {
                 return new AdvancedShulkerboxMenu(i, inventory, serverPlayer, shulkerBox);
             }
         });
+    }
+
+    protected static float getVariatedPitch(Level world) {
+        return world.random.nextFloat() * 0.1F + 0.9F;
     }
 
 }
