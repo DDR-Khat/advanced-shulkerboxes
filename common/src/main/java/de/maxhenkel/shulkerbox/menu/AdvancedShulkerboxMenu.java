@@ -11,6 +11,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+
+import static de.maxhenkel.shulkerbox.AdvancedShulkerboxesMod.*;
 
 public class AdvancedShulkerboxMenu extends ShulkerBoxMenu {
 
@@ -24,16 +27,16 @@ public class AdvancedShulkerboxMenu extends ShulkerBoxMenu {
     }
 
     @Override
-    public void clicked(int slot, int mouseButton, ClickType clickType, Player player) {
-        if (slot < 0 || slot >= slots.size()) {
-            super.clicked(slot, mouseButton, clickType, player);
-            return;
-        }
-        ItemStack stack = slots.get(slot).getItem();
+    public void clicked(int slot, int mouseButton, @NotNull ClickType clickType, @NotNull Player player) {
 
-        if (stack == shulkerBox) {
+        ItemStack stack = slots.get(slot).getItem();
+        ItemStack swapStack = slots.get(mouseButton).getItem();
+
+        if (stack == shulkerBox ||
+            swapStack == shulkerBox) {
             return;
         }
+
         super.clicked(slot, mouseButton, clickType, player);
     }
 
